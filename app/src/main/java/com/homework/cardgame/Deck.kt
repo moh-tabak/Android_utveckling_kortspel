@@ -29,6 +29,7 @@ class Deck(suits: Array<CardSuits>) {
             result.add(ArrayList(cards.subList(pointer, pointer + splitSize -1)))
             i++
         }
+        cards.removeAll(cards.toSet())
         return result
     }
 }

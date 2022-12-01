@@ -7,11 +7,17 @@ class Hand {
         cards.sortedWith(compareBy<Card> { it.suit.getNumerical() }.thenBy { it.value })
     }
 
-    public fun Add(card :Card){
-
+    public fun add(card :Card){
+        cards.add(card)
     }
 
-    public fun Remove(cardIndex :Int):Card{
-        return Card(CardSuits.CLUBS,0)
+    public fun addCollection(cardCollection :ArrayList<Card>){
+        cards.addAll(cardCollection)
+    }
+
+    public fun remove(cardIndex :Int):Card{
+        var result = cards[cardIndex]
+        cards.removeAt(cardIndex)
+        return result
     }
 }

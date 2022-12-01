@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.884" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Card Game"
@@ -34,13 +34,12 @@
         app:layout_constraintVertical_bias="0.229" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textDescription"
         android:layout_width="260dp"
         android:layout_height="124dp"
         android:layout_marginTop="28dp"
-        android:text="TextView"
+        android:text="You play against an A.I. To win you have to finish your cards first. The first card in the stack has to be a 10. Players take turns to stacks cards of the same type (suit) and in a value order (from King to 1)."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:text="You play against an A.I. and to win you finish your cards first. The first card in the stack has to be a King. Players take turns to stacks cards of the same type and in a value order (from King to 1)." />
+        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
