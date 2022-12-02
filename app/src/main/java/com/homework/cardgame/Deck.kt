@@ -1,8 +1,8 @@
 package com.homework.cardgame
 
 class Deck(suits: Array<CardSuits>) {
-    public var cards = arrayListOf<Card>()
-    public var suits = arrayOf<CardSuits>()
+    var cards = arrayListOf<Card>()
+    var suits = arrayOf<CardSuits>()
 
     init {
         this.suits = suits
