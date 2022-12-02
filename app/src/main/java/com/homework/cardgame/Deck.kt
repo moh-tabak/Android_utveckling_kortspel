@@ -25,7 +25,7 @@ class Deck(suits: Array<CardSuits>) {
         var pointer=0
         val result = ArrayList<ArrayList<Card>>()
         while (i<numberOfPlayers){
-            pointer = i*splitSize
+            pointer = i * splitSize
             result.add(ArrayList(cards.subList(pointer, pointer + splitSize -1)))
             i++
         }
