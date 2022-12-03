@@ -20,7 +20,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var spadesStack: LinearLayout
     private lateinit var btnPass :Button
 
-    private lateinit var turnText : TextView
 
     private lateinit var playerHand : Hand
     private lateinit var opponentHand : Hand
@@ -44,12 +43,10 @@ class GameActivity : AppCompatActivity() {
             btnPass.visibility = View.INVISIBLE
         }
 
-        turnText = findViewById(R.id.turn_text)
-
         startNewGame()
     }
 
-    public fun startNewGame(){
+    private fun startNewGame(){
         playerHand = Hand()
         opponentHand = Hand()
         table = Table()
@@ -92,18 +89,10 @@ class GameActivity : AppCompatActivity() {
             tableLayout.removeAllViews()
             return
         }
-
+        val turnText :TextView = findViewById(R.id.turn_text)
         if(!playerTurn){
             turnText.text="Your Turn"
             playerTurn =true
-            var playableCards = getPlayableCards(playerHand)
-            for(card in playableCards){
-                turnText.text = turnText.text.toString() + " , " +card.value.toString()
-            }
-            turnText.text = turnText.text.toString() + ". Out of : "
-            for(cardOfAll in playerHand.cards){
-                turnText.text = turnText.text.toString() + " , " +cardOfAll.value.toString()
-            }
             if (getPlayableCards(playerHand).isEmpty()) {
                 //Show Pass button
                 btnPass.visibility = View.VISIBLE
