@@ -40,10 +40,10 @@ class FileIndex {
                 }
             }
             CardSuits.HEARTS  -> {
-                   throw Exception("card resource doesn't exist.")
+                TODO("card resource doesn't exist.")
             }
             CardSuits.DIAMONDS -> {
-                throw Exception("card resource doesn't exist.")
+                TODO("card resource doesn't exist.")
             }
         }
     }

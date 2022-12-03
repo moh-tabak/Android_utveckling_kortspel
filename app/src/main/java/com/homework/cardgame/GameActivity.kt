@@ -1,14 +1,14 @@
 package com.homework.cardgame
 
-import android.app.Dialog
+
 import android.os.Bundle
-import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TableLayout
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.random.Random
 
 
 class GameActivity : AppCompatActivity() {
@@ -18,6 +18,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var tableLayout :TableLayout
     private lateinit var clubsStack :LinearLayout
     private lateinit var spadesStack: LinearLayout
+    private lateinit var btnPass :Button
 
     private lateinit var playerHand : Hand
     private lateinit var opponentHand : Hand
@@ -25,7 +26,7 @@ class GameActivity : AppCompatActivity() {
     private var deck = Deck(arrayOf(CardSuits.CLUBS, CardSuits.SPADES))
     private val fileIndex = FileIndex()
 
-    private var whoseTurn = 1
+    private var playerTurn :Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,11 @@ class GameActivity : AppCompatActivity() {
         tableLayout = findViewById(R.id.table_layout)
         clubsStack = tableLayout.findViewById(R.id.clubs_stack)
         spadesStack = tableLayout.findViewById(R.id.spades_stack)
+        btnPass = findViewById(R.id.btn_pass)
+        btnPass.setOnClickListener{
+            endTurn()
+            btnPass.visibility = View.GONE
+        }
 
         startNewGame()
     }
@@ -49,27 +55,51 @@ class GameActivity : AppCompatActivity() {
         playerHand.organize()
         renderPlayerHand()
         opponentHand.addCollection(cardCollections[1])
+        opponentHand.organize()
         renderOpponentHand()
-    }
-
-    private fun tryPlayCard(viewId :Int){
-        if(whoseTurn==1 && table.isCardPlayable(playerHand.cards[viewId])){
-            table.addCard(playerHand.remove(viewId))
-            renderPlayerHand()
-            renderTable()
+        playerTurn = true
+        if (getPlayableCards(playerHand).isEmpty()) {
+            endTurn()
         }
     }
 
-    private fun turnEnd(){
+    private fun getPlayableCards(hand: Hand) :ArrayList<Card>{
+        var result = arrayListOf<Card>()
+        for(card in hand.cards){
+            if(table.isCardPlayable(card))
+                result.add(card)
+        }
+        return result
+    }
+
+    private fun tryPlayCard(viewId :Int){
+        if(playerTurn && table.isCardPlayable(playerHand.cards[viewId])){
+            table.addCard(playerHand.remove(viewId))
+            renderPlayerHand()
+            renderTable()
+            endTurn()
+        }
+    }
+
+    private fun endTurn(){
         if(isThereWinner()){
+            //match ended
             playerLayout.removeAllViews()
             tableLayout.removeAllViews()
             return
         }
-        if(whoseTurn == 2)
-            whoseTurn = 1
-        else
-            whoseTurn++
+
+        if(!playerTurn){
+            playerTurn =true
+            if (getPlayableCards(playerHand).isEmpty()) {
+                //Show Pass button
+                btnPass.visibility = View.VISIBLE
+            }
+        } else {
+        //AI's turn
+            playerTurn = false
+            aiPlay()
+        }
     }
 
     private fun isThereWinner() : Boolean{
@@ -82,6 +112,19 @@ class GameActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    private fun aiPlay(){
+        var playableCards = getPlayableCards(opponentHand)
+        if (playableCards.isEmpty()) {
+            endTurn()
+        } else {
+            val randomIndex = Random.nextInt(playableCards.count())
+            table.addCard(opponentHand.remove(opponentHand.cards.indexOf(playableCards[randomIndex])))
+            renderOpponentHand()
+            renderTable()
+            endTurn()
+        }
     }
 
     private fun renderPlayerHand(){
@@ -130,17 +173,16 @@ class GameActivity : AppCompatActivity() {
         if(stack.highestValue != 10){
             tenCardTopShift = 125
             lowCardTopShift = 160
-            renderCard(Card(CardSuits.CLUBS,stack.highestValue),stackLayout,cardStartIndex)
+            renderCard(Card(stack.suit,stack.highestValue),stackLayout,cardStartIndex)
             stackLayout.findViewById<ImageView>(cardStartIndex).layoutParams = setCardMargins(5,5,5,5)
         }
-        renderCard(Card(CardSuits.CLUBS,10),stackLayout,cardStartIndex+1)
+        renderCard(Card(stack.suit,10),stackLayout,cardStartIndex+1)
         stackLayout.findViewById<ImageView>(cardStartIndex + 1).layoutParams = setCardMargins(5,5 - tenCardTopShift,5,5)
         if(stack.lowestValue != 10){
-        renderCard(Card(CardSuits.CLUBS,stack.lowestValue),stackLayout,cardStartIndex+2)
+        renderCard(Card(stack.suit,stack.lowestValue),stackLayout,cardStartIndex+2)
         stackLayout.findViewById<ImageView>(cardStartIndex + 2).layoutParams = setCardMargins(5,5 - lowCardTopShift,5,5)
         }
     }
-
 
     private fun setCardMargins(left:Int,top:Int,right:Int,bottom:Int) :LinearLayout.LayoutParams {
         val params = LinearLayout.LayoutParams(120,160)
@@ -149,16 +191,19 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun showPlayAgainDialog(message :String){
-        val dialog = Dialog(baseContext)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.play_again_dialog_layout)
-        val body : TextView = dialog.findViewById(R.id.play_again_message)
-        body.text = message
-        val btnPlayAgain :Button= dialog.findViewById(R.id.btn_play_again)
-        btnPlayAgain.setOnClickListener {
-            dialog.dismiss()
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val viewGroup = findViewById<ViewGroup>(androidx.appcompat.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.play_again_dialog, viewGroup, false)
+        builder.setView(dialogView)
+        dialogView.findViewById<TextView>(R.id.play_again_message)?.text = message
+
+        val alertDialog: AlertDialog = builder.create()
+        dialogView.findViewById<Button>(R.id.btn_play_again)?.setOnClickListener{
+            startNewGame()
+            alertDialog.hide()
         }
-        dialog.show()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 }
