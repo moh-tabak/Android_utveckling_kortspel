@@ -51,11 +51,10 @@ class GameActivity : AppCompatActivity() {
     private fun renderCard(card: Card, layout : LinearLayout, id :Int){
         val cardView = ImageView(baseContext)
         cardView.id = id
-        val params = LinearLayout.LayoutParams(120,200)
-        params.setMargins(5,5,-60,5)
+        val params = LinearLayout.LayoutParams(120,140)
+        params.setMargins(-70,5,5,5)
         cardView.layoutParams = params
         cardView.setImageResource(fileIndex.getCardRes(card))
-        cardView.translationZ = -cardView.z +1
         layout.addView(cardView)
     }
 

@@ -25,7 +25,7 @@ class Deck(suits: Array<CardSuits>) {
         val result = ArrayList<ArrayList<Card>>()
         for (i in 0 until numberOfPlayers){
             pointer = i * splitSize
-            result.add(ArrayList(cards.subList(pointer, pointer + splitSize -1)))
+            result.add(ArrayList(cards.subList(pointer, pointer + splitSize)))
         }
         cards.removeAll(cards.toSet())
         return result

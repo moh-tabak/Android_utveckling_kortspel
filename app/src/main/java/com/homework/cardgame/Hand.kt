@@ -4,7 +4,7 @@ class Hand {
     public var cards = arrayListOf<Card>()
 
     public fun organize(){
-        cards.sortedWith(compareBy<Card> { it.suit.getNumerical() }.thenBy { it.value })
+        cards = ArrayList(cards.sortedWith(compareBy<Card> { it.suit.getNumerical() }.thenBy { it.value }))
     }
 
     public fun add(card :Card){

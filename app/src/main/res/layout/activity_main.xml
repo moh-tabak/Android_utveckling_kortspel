@@ -13,20 +13,20 @@
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Card Game"
+        android:text="@string/game_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229" />
+        app:layout_constraintVertical_bias="0.100000024" />
 
     <TextView
         android:id="@+id/textDescription"
         android:layout_width="260dp"
         android:layout_height="124dp"
         android:layout_marginTop="28dp"
-        android:text="You play against an A.I. To win you have to finish your cards first. The first card in the stack has to be a 10. Players take turns to stacks cards of the same type (suit) and in a value order (from King to 1)."
+        android:text="@string/game_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitle" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="300dp"
-        android:text="Start Game"
+        android:text="@string/btn_start_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
