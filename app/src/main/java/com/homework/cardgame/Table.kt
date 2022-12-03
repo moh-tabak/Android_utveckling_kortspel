@@ -23,14 +23,21 @@ class Table {
     }
 
     fun isCardPlayable(card :Card) :Boolean{
-        val stack = getStack(card.suit) ?: return true
-        if(card.value < 10){
-            if(card.value == (stack.lowestValue - 1))
+        val stack = getStack(card.suit)
+        if(stack == null) {
+            //Stack doesn't exist on the table
+            if (card.value == 10)
                 return true
-        }
-        if(card.value > 10){
-            if(card.value == stack.highestValue + 1) {
-                return true
+        }else{
+            //Stack already exists
+            if(card.value < 10){
+                if(card.value == (stack.lowestValue - 1))
+                    return true
+            }
+            if(card.value > 10){
+                if(card.value == stack.highestValue + 1) {
+                    return true
+                }
             }
         }
         return false
