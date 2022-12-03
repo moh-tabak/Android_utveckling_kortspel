@@ -55,7 +55,20 @@
         app:layout_constraintTop_toTopOf="parent">
         <TableRow
             android:id="@+id/table_row">
-
+            <LinearLayout
+                android:id="@+id/clubs_stack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_column="1">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/spades_stack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_column="2">
+            </LinearLayout>
         </TableRow>
     </TableLayout>
 
