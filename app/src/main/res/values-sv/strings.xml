@@ -6,4 +6,6 @@
     <string name="btn_start_game">Spela</string>
     <string name="opponent_text">Antal kort som motståndaren har:</string>
     <string name="btn_play_again">Spela om</string>
+    <string name="you_won">Du Vann!</string>
+    <string name="you_lost">Du förlorade!</string>
 </resources>

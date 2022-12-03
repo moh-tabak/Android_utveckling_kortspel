@@ -44,6 +44,6 @@ class Table {
     }
 
     private fun getStack(suit: CardSuits) :Stack?{
-        return stacks.firstOrNull{ it.suit == suit }
+        return stacks.firstOrNull{ it.suit === suit }
     }
 }

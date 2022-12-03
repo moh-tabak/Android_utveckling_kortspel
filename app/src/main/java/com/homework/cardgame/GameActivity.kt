@@ -20,6 +20,8 @@ class GameActivity : AppCompatActivity() {
     private lateinit var spadesStack: LinearLayout
     private lateinit var btnPass :Button
 
+    private lateinit var turnText : TextView
+
     private lateinit var playerHand : Hand
     private lateinit var opponentHand : Hand
     private lateinit var table : Table
@@ -42,10 +44,12 @@ class GameActivity : AppCompatActivity() {
             btnPass.visibility = View.INVISIBLE
         }
 
+        turnText = findViewById(R.id.turn_text)
+
         startNewGame()
     }
 
-    private fun startNewGame(){
+    public fun startNewGame(){
         playerHand = Hand()
         opponentHand = Hand()
         table = Table()
@@ -82,7 +86,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun endTurn(){
-        val textView : TextView = findViewById(R.id.turn_text)
         if(isThereWinner()){
             //match ended
             playerLayout.removeAllViews()
@@ -91,15 +94,23 @@ class GameActivity : AppCompatActivity() {
         }
 
         if(!playerTurn){
-            textView.text="Your Turn"
+            turnText.text="Your Turn"
             playerTurn =true
+            var playableCards = getPlayableCards(playerHand)
+            for(card in playableCards){
+                turnText.text = turnText.text.toString() + " , " +card.value.toString()
+            }
+            turnText.text = turnText.text.toString() + ". Out of : "
+            for(cardOfAll in playerHand.cards){
+                turnText.text = turnText.text.toString() + " , " +cardOfAll.value.toString()
+            }
             if (getPlayableCards(playerHand).isEmpty()) {
                 //Show Pass button
                 btnPass.visibility = View.VISIBLE
             }
         } else {
         //AI's turn
-            textView.text = "AI's Turn"
+                turnText.text = "AI's Turn"
             playerTurn = false
             aiPlay()
         }
@@ -107,11 +118,13 @@ class GameActivity : AppCompatActivity() {
 
     private fun isThereWinner() : Boolean{
         if(playerHand.cards.isEmpty()){
-            showPlayAgainDialog("You won!")
+            showPlayAgainDialog(resources.getString(R.string.you_won))
+            startNewGame()
             return true
         }
         if(opponentHand.cards.isEmpty()){
-            showPlayAgainDialog("You lost!")
+            showPlayAgainDialog(resources.getString(R.string.you_lost))
+            startNewGame()
             return true
         }
         return false
@@ -119,15 +132,13 @@ class GameActivity : AppCompatActivity() {
 
     private fun aiPlay(){
         var playableCards = getPlayableCards(opponentHand)
-        if (playableCards.isEmpty()) {
-            endTurn()
-        } else {
+        if (playableCards.isNotEmpty()) {
             val randomIndex = Random.nextInt(playableCards.count())
             table.addCard(opponentHand.remove(opponentHand.cards.indexOf(playableCards[randomIndex])))
             renderOpponentHand()
             renderTable()
-            endTurn()
         }
+        endTurn()
     }
 
     private fun renderPlayerHand(){
@@ -204,7 +215,6 @@ class GameActivity : AppCompatActivity() {
         val alertDialog: AlertDialog = builder.create()
         dialogView.findViewById<Button>(R.id.btn_play_again)?.setOnClickListener{
             alertDialog.hide()
-            startNewGame()
         }
         alertDialog.setCancelable(false)
         alertDialog.show()
