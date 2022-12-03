@@ -39,7 +39,7 @@ class GameActivity : AppCompatActivity() {
         btnPass = findViewById(R.id.btn_pass)
         btnPass.setOnClickListener{
             endTurn()
-            btnPass.visibility = View.GONE
+            btnPass.visibility = View.INVISIBLE
         }
 
         startNewGame()
@@ -64,7 +64,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun getPlayableCards(hand: Hand) :ArrayList<Card>{
-        var result = arrayListOf<Card>()
+        val result = arrayListOf<Card>()
         for(card in hand.cards){
             if(table.isCardPlayable(card))
                 result.add(card)
@@ -72,7 +72,7 @@ class GameActivity : AppCompatActivity() {
         return result
     }
 
-    private fun tryPlayCard(viewId :Int){
+    private fun onCardClick(viewId :Int){
         if(playerTurn && table.isCardPlayable(playerHand.cards[viewId])){
             table.addCard(playerHand.remove(viewId))
             renderPlayerHand()
@@ -82,6 +82,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun endTurn(){
+        val textView : TextView = findViewById(R.id.turn_text)
         if(isThereWinner()){
             //match ended
             playerLayout.removeAllViews()
@@ -90,6 +91,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         if(!playerTurn){
+            textView.text="Your Turn"
             playerTurn =true
             if (getPlayableCards(playerHand).isEmpty()) {
                 //Show Pass button
@@ -97,6 +99,7 @@ class GameActivity : AppCompatActivity() {
             }
         } else {
         //AI's turn
+            textView.text = "AI's Turn"
             playerTurn = false
             aiPlay()
         }
@@ -138,7 +141,7 @@ class GameActivity : AppCompatActivity() {
             else
                 findViewById<ImageView>(id).layoutParams = setCardMargins(-70,5,5,5)
             findViewById<ImageView>(id).setOnClickListener {
-                tryPlayCard(it.id)
+                onCardClick(it.id)
             }
             id++
         }
@@ -168,19 +171,19 @@ class GameActivity : AppCompatActivity() {
 
     private fun renderStack(stackLayout :LinearLayout, stack :Stack , cardStartIndex :Int){
         stackLayout.removeAllViews()
-        var tenCardTopShift = 0
-        var lowCardTopShift = 125
+        var tenCardMarginTopShift = 0
+        var lowCardMarginTopShift = 125
         if(stack.highestValue != 10){
-            tenCardTopShift = 125
-            lowCardTopShift = 160
+            tenCardMarginTopShift = 125
+            lowCardMarginTopShift = 160
             renderCard(Card(stack.suit,stack.highestValue),stackLayout,cardStartIndex)
             stackLayout.findViewById<ImageView>(cardStartIndex).layoutParams = setCardMargins(5,5,5,5)
         }
         renderCard(Card(stack.suit,10),stackLayout,cardStartIndex+1)
-        stackLayout.findViewById<ImageView>(cardStartIndex + 1).layoutParams = setCardMargins(5,5 - tenCardTopShift,5,5)
+        stackLayout.findViewById<ImageView>(cardStartIndex + 1).layoutParams = setCardMargins(5,5 - tenCardMarginTopShift,5,5)
         if(stack.lowestValue != 10){
-        renderCard(Card(stack.suit,stack.lowestValue),stackLayout,cardStartIndex+2)
-        stackLayout.findViewById<ImageView>(cardStartIndex + 2).layoutParams = setCardMargins(5,5 - lowCardTopShift,5,5)
+            renderCard(Card(stack.suit,stack.lowestValue),stackLayout,cardStartIndex+2)
+            stackLayout.findViewById<ImageView>(cardStartIndex + 2).layoutParams = setCardMargins(5,5 - lowCardMarginTopShift,5,5)
         }
     }
 
@@ -200,8 +203,8 @@ class GameActivity : AppCompatActivity() {
 
         val alertDialog: AlertDialog = builder.create()
         dialogView.findViewById<Button>(R.id.btn_play_again)?.setOnClickListener{
-            startNewGame()
             alertDialog.hide()
+            startNewGame()
         }
         alertDialog.setCancelable(false)
         alertDialog.show()
