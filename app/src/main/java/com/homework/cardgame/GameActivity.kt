@@ -1,7 +1,6 @@
 package com.homework.cardgame
 
 import android.os.Bundle
-import java.lang.Float.intBitsToFloat
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -38,6 +37,13 @@ class GameActivity : AppCompatActivity() {
         var id :Int = 0
         for(card in playerHand.cards){
             renderCard(card,playerLayout,id)
+            val params = LinearLayout.LayoutParams(120,160)
+            //Shift the cards' margin to the left, if it's not the last card to the left
+            if(id==playerHand.cards.count() - 1)
+                params.setMargins(5,5,5,5)
+            else
+                params.setMargins(-70,5,5,5)
+            findViewById<ImageView>(id).layoutParams = params
             findViewById<ImageView>(id).setOnClickListener {
                 tryPlayCard(it.id)
             }
@@ -51,9 +57,7 @@ class GameActivity : AppCompatActivity() {
     private fun renderCard(card: Card, layout : LinearLayout, id :Int){
         val cardView = ImageView(baseContext)
         cardView.id = id
-        val params = LinearLayout.LayoutParams(120,140)
-        params.setMargins(-70,5,5,5)
-        cardView.layoutParams = params
+
         cardView.setImageResource(fileIndex.getCardRes(card))
         layout.addView(cardView)
     }

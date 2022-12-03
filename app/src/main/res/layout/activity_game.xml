@@ -9,22 +9,23 @@
 
     <LinearLayout
         android:id="@+id/opponent_layout"
-        android:layout_width="500dp"
-        android:layout_height="78dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/player_layout"
-        android:layout_width="500dp"
-        android:layout_height="78dp"
-        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layoutDirection="rtl"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +34,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <TableLayout
         android:id="@+id/table_layout"
         android:layout_width="350dp"
         android:layout_height="176dp"
@@ -42,6 +43,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <TableRow
+            android:id="@+id/table_row">
 
-    </LinearLayout>
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
