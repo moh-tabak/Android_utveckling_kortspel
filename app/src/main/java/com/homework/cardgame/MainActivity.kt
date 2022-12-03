@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() { 
-    private var lastBackPressTime = 0L
+    private var lastBackPressTime : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -21,13 +21,11 @@ class Deck(suits: Array<CardSuits>) {
 
     public fun split(numberOfPlayers :Int) : ArrayList<ArrayList<Card>>{
         val splitSize :Int = cards.count()/numberOfPlayers
-        var i=0
         var pointer=0
         val result = ArrayList<ArrayList<Card>>()
-        while (i<numberOfPlayers){
+        for (i in 0 until numberOfPlayers){
             pointer = i * splitSize
             result.add(ArrayList(cards.subList(pointer, pointer + splitSize -1)))
-            i++
         }
         cards.removeAll(cards.toSet())
         return result
