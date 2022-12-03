@@ -4,4 +4,5 @@
     <string name="game_title">Kortspel</string>
     <string name="game_description">Du spelar mot en A.I. För att vinna måste dina kort tar slut först. Det första kortet som spelas måste vara en 10:a. Spelare turas om att stapla kort av samma typ (färg) och i en värdeordning (från kung till 1).</string>
     <string name="btn_start_game">Spela</string>
+    <string name="opponent_text">Antal kort som motståndaren har:</string>
 </resources>

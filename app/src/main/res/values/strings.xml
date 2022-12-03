@@ -3,4 +3,5 @@
     <string name="game_title">Card Game</string>
     <string name="game_description">You play against an A.I. To win you have to finish your cards first. The first card in the stack has to be a 10. Players take turns to stacks cards of the same type (suit) and in a value order (from King to 1).</string>
     <string name="btn_start_game">Start Game</string>
+    <string name="opponent_text">Cards in your opponent\'s hand:</string>
 </resources>
