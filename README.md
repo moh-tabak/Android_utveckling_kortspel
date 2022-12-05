@@ -7,11 +7,11 @@ Cards' sorted by value from highest to lowest: King, Queen, Jack, 10, 9, 8, 7, 6
 
 The main activity(view) gives the player important information about how to play and the goal of the game.
 
-![Main activity](https://github.com/moh-tabak/Android_utveckling_kortspel/blob/image-files/skiss_main_act.png)
+![Main activity](../image-files/skiss_main_act.png)
 
 The game view has a container at the bottom of the screen to show the cards in player's hand. At the opposite side there's similar container to show the opponent's cards without showing what they are.
 
 The container in the middle of the screen shows what cards stacked on the table.
 
 
-![Game activity](https://github.com/moh-tabak/Android_utveckling_kortspel/blob/image-files/skiss_game_act.png)
+![Game activity](../image-files/skiss_game_act.png)
