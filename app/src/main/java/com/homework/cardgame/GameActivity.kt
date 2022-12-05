@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import kotlin.concurrent.thread
 import kotlin.random.Random
 
 
@@ -21,9 +23,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var btnPass :Button
 
 
-    private lateinit var playerHand : Hand
-    private lateinit var opponentHand : Hand
-    private lateinit var table : Table
+    private val playerHand = Hand()
+    private val opponentHand = Hand()
+    private val table = Table()
     private var deck = Deck(arrayOf(CardSuits.CLUBS, CardSuits.SPADES))
     private val fileIndex = FileIndex()
 
@@ -39,29 +41,35 @@ class GameActivity : AppCompatActivity() {
         spadesStack = tableLayout.findViewById(R.id.spades_stack)
         btnPass = findViewById(R.id.btn_pass)
         btnPass.setOnClickListener{
+            btnPass.visibility = Button.GONE
             endTurn()
-            btnPass.visibility = View.INVISIBLE
         }
 
         startNewGame()
     }
 
     private fun startNewGame(){
-        playerHand = Hand()
-        opponentHand = Hand()
-        table = Table()
+        playerHand.clear()
+        opponentHand.clear()
+        table.clear()
+        //clear table layout
+        spadesStack.removeAllViews()
+        clubsStack.removeAllViews()
+
         deck.shuffle()
         val cardCollections = deck.split(2)
         playerHand.addCollection(cardCollections[0])
         playerHand.organize()
         renderPlayerHand()
         opponentHand.addCollection(cardCollections[1])
-        opponentHand.organize()
         renderOpponentHand()
         playerTurn = true
         if (getPlayableCards(playerHand).isEmpty()) {
             endTurn()
         }
+        Thread.sleep(500)
+        playerLayout.refreshDrawableState()
+        tableLayout.refreshDrawableState()
     }
 
     private fun getPlayableCards(hand: Hand) :ArrayList<Card>{
@@ -85,24 +93,28 @@ class GameActivity : AppCompatActivity() {
     private fun endTurn(){
         if(isThereWinner()){
             //match ended
-            playerLayout.removeAllViews()
-            tableLayout.removeAllViews()
             return
         }
-        val turnText :TextView = findViewById(R.id.turn_text)
         if(!playerTurn){
-            turnText.text="Your Turn"
             playerTurn =true
             if (getPlayableCards(playerHand).isEmpty()) {
                 //Show Pass button
-                btnPass.visibility = View.VISIBLE
+                btnPass.visibility = Button.VISIBLE
             }
         } else {
         //AI's turn
-                turnText.text = "AI's Turn"
             playerTurn = false
             aiPlay()
         }
+    }
+
+    private fun aiPassTurn() {
+            if (getPlayableCards(playerHand).isEmpty()) {
+                //Show Pass button
+                btnPass.visibility = Button.VISIBLE
+            }
+            playerTurn = true
+        Toast.makeText(this,"AI passed",Toast.LENGTH_SHORT)
     }
 
     private fun isThereWinner() : Boolean{
@@ -126,8 +138,10 @@ class GameActivity : AppCompatActivity() {
             table.addCard(opponentHand.remove(opponentHand.cards.indexOf(playableCards[randomIndex])))
             renderOpponentHand()
             renderTable()
-        }
         endTurn()
+        }
+        else
+        aiPassTurn()
     }
 
     private fun renderPlayerHand(){

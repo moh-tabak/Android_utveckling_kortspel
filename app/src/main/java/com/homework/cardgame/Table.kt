@@ -46,4 +46,8 @@ class Table {
     private fun getStack(suit: CardSuits) :Stack?{
         return stacks.firstOrNull{ it.suit === suit }
     }
+
+    public fun clear() {
+        stacks = arrayListOf<Stack>()
+    }
 }

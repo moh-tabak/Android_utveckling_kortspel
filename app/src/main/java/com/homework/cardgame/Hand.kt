@@ -20,4 +20,7 @@ class Hand {
         cards.removeAt(cardIndex)
         return result
     }
+    public fun clear() {
+        cards = arrayListOf<Card>()
+    }
 }
